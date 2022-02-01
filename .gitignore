@@ -50,3 +50,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# CodeBlocks dirs
+bin/*
+obj/*
+
+# CodeBlocks files
+*.cbp
+*.depend
+*.layout
+
+# Other
+_backup_*
