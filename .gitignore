@@ -62,3 +62,11 @@ obj/*
 
 # Other
 _backup_*
+
+# MakeFiles
+CMakeLists.*
+*.make
+
+# CLion dirs
+cmake-build-debug/*
+build/*
