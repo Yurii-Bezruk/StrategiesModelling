@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "print.h"
 #include "binary.h"
 #include "strategy.h"
