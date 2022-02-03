@@ -16,6 +16,7 @@ void print_strategy(Strategy* str, int main_digits_count) {
     print_binary(str->prev_move, main_digits_count / 2);
     print("]");
     print_binary(str->name, main_digits_count);
+    printf("\t%d", str->points);
 }
 
 void println_strategy(Strategy* str, int main_digits_count) {
