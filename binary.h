@@ -1,5 +1,6 @@
 #ifndef BINARY_H_INCLUDED
 #define BINARY_H_INCLUDED
+#include <math.h>
 
 /**
 * Returns value of @position bit of @number
@@ -16,6 +17,6 @@
 * @param move - new move to be appended (0 or 1)
 * @param digits_count - count of active digits
 */
-#define append_move(number, move, digits_count) (((number << 1) + move) & ~(1 << digits_count))
+#define append_move(number, move, digits_count) (number = (((number << 1) + move) & ~(1 << digits_count)))
 
 #endif // BINARY_H_INCLUDED

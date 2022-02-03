@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "print.h"
 #include "binary.h"
 #include "strategy.h"
@@ -24,6 +25,18 @@ int main() {
             strategies[strat_index].name = i;
             strategies[strat_index].prev_move = j;
             strategies[strat_index].points = 0;
+        }
+    }
+    for (int i = 0; i < all_strategies_count; i++){
+        for (int j = i; j < all_strategies_count; j++){
+            for (int k = 0; k < ITERATIONS_COUNT; k++){
+                int s1_move = bit_at(strategies[i].name, strategies[j].prev_move);
+                int s2_move = bit_at(strategies[j].name, strategies[i].prev_move);
+                strategies[i].points += matrix[s1_move][s2_move];
+                strategies[j].points += matrix[s2_move][s1_move];
+                append_move(strategies[i].prev_move, s1_move, sub_digits_count);
+                append_move(strategies[j].prev_move, s2_move, sub_digits_count);
+            }
         }
     }
     for (int i = 0; i < all_strategies_count; i++){
