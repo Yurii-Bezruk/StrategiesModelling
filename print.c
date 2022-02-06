@@ -13,7 +13,7 @@ void println_binary(int_fast32_t x, int_fast32_t digits) {
 
 void print_strategy(Strategy* str, int_fast32_t main_digits_count) {
     print("[");
-    print_binary(str->prev_move, main_digits_count / 2);
+    print_binary(str->first_move, main_digits_count / 2);
     print("]");
     print_binary(str->name, main_digits_count);
     printf("\t%d", str->points);

@@ -21,11 +21,12 @@ int main() {
     int_fast32_t all_strategies_count = main_strategies_count * sub_strategies_count;
     Strategy strategies[all_strategies_count];
 
-    for (int_fast32_t i = 0, start_index = 0; i < main_strategies_count; i++) {
-        for (int_fast32_t j = 0; j < sub_strategies_count; j++, start_index++){
-            strategies[start_index].name = i;
-            strategies[start_index].prev_move = j;
-            strategies[start_index].points = 0;
+    for (int_fast32_t i = 0, strat_index = 0; i < main_strategies_count; i++) {
+        for (int_fast32_t j = 0; j < sub_strategies_count; j++, strat_index++){
+            strategies[strat_index].name = i;
+            strategies[strat_index].prev_move = j;
+            strategies[strat_index].first_move = j;
+            strategies[strat_index].points = 0;
         }
     }
     for (int_fast32_t i = 0; i < all_strategies_count; i++){
@@ -33,6 +34,12 @@ int main() {
             for (int_fast32_t k = 0; k < ITERATIONS_COUNT; k++){
                 int s1_move = bit_at(strategies[i].name, strategies[j].prev_move);
                 int s2_move = bit_at(strategies[j].name, strategies[i].prev_move);
+//                print_strategy(strategies + i, main_digits_count);
+//                print(": ");
+//                println(s1_move);
+//                print_strategy(strategies + j, main_digits_count);
+//                print(": ");
+//                println(s2_move);
                 strategies[i].points += matrix[s1_move][s2_move];
                 strategies[j].points += matrix[s2_move][s1_move];
                 append_move(strategies[i].prev_move, s1_move, sub_digits_count);
