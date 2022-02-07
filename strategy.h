@@ -3,9 +3,9 @@
 #include <stdint.h>
 
 typedef struct {
-    uint8_t name;
-    uint8_t prev_move;
-    int points;
+    uint_fast8_t name;
+    uint_fast8_t prev_move;
+    uint_fast64_t points;
 } Strategy;
 
 #endif // STRATEGY_H_INCLUDED
