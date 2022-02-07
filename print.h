@@ -27,14 +27,14 @@
 * form.
 * @param digits - count of bits to be printed
 */
-void print_binary(int x, int digits);
+void print_binary(int_fast32_t x, int_fast32_t digits);
 
 /**
 * Function for custom printing of values in binary
 * form with line separator.
 * @param digits - count of bits to be printed
 */
-void println_binary(int x, int digits);
+void println_binary(int_fast32_t x, int_fast32_t digits);
 
 /**
 * Function for printing the strategy object in readable form
@@ -43,7 +43,7 @@ void println_binary(int x, int digits);
 * @param main_digits_count - count of digits of the main
 *   strategy name to be presented.
 */
-void print_strategy(Strategy* str, int main_digits_count);
+void print_strategy(Strategy* str, int_fast32_t main_digits_count);
 
 /**
 * Function for printing the strategy object in readable form
@@ -52,6 +52,6 @@ void print_strategy(Strategy* str, int main_digits_count);
 * @param main_digits_count - count of digits of the main
 *   strategy name to be presented.
 */
-void println_strategy(Strategy* str, int main_digits_count);
+void println_strategy(Strategy* str, int_fast32_t main_digits_count);
 
 #endif // PRINT_H_INCLUDED
