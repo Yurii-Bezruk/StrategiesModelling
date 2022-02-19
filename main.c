@@ -11,7 +11,7 @@ int_fast32_t matrix[2][2] = {
 };
 uint_fast32_t MEMORY_DEPTH = 0;
 
-const int_fast32_t ITERATIONS_COUNT = 500;
+const uint_fast32_t ITERATIONS_COUNT = 500;
 
 int main() {
     int_fast32_t main_digits_count = (int_fast32_t)pow(2, MEMORY_DEPTH + 1);
@@ -31,23 +31,32 @@ int main() {
     }
     for (int_fast32_t i = 0; i < all_strategies_count; i++) {
         for (int_fast32_t j = i; j < all_strategies_count; j++) {
-            int_fast32_t s1_move = bit_at(strategies[i].name, strategies[j].first_move);
-            int_fast32_t s2_move = bit_at(strategies[j].name, strategies[i].first_move);
+//            int i = 2; int j = 5;
+            int_fast32_t s1_move = bit_at(strategies[i].first_move, 0);
+            int_fast32_t s2_move = bit_at(strategies[j].first_move, 0);
+//            print_strategy(strategies + i, main_digits_count); print("->"); print(s1_move);
+//            print(" ");
+//            print_strategy(strategies + j, main_digits_count); print("->"); println(s2_move);
             for (int_fast32_t k = 0; k < ITERATIONS_COUNT - 1; k++) {
                 strategies[i].points += matrix[s1_move][s2_move];
-                strategies[j].points += matrix[s2_move][s1_move];
+                if(i != j) {
+                    strategies[j].points += matrix[s2_move][s1_move];
+                }
                 append_move(strategies[i].prev_move, s1_move, sub_digits_count);
                 append_move(strategies[j].prev_move, s2_move, sub_digits_count);
                 s1_move = bit_at(strategies[i].name, strategies[j].prev_move);
                 s2_move = bit_at(strategies[j].name, strategies[i].prev_move);
             }
             strategies[i].points += matrix[s1_move][s2_move];
-            strategies[j].points += matrix[s2_move][s1_move];
+            if(i != j) {
+                strategies[j].points += matrix[s2_move][s1_move];
+            }
         }
     }
-//    for (int_fast32_t i = 0; i < all_strategies_count; i++) {
-//        println_strategy(strategies + i, main_digits_count);
-//    }
+    for (int_fast32_t i = 0; i < all_strategies_count; i++) {
+        println_strategy(strategies + i, main_digits_count);
+    }
+    println("\n\n");
     for (int_fast32_t i = 0; i < all_strategies_count; i += sub_strategies_count) {
         for (int_fast32_t j = i + 1; j < i + sub_strategies_count; j++) {
             strategies[i].points += strategies[j].points;
