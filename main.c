@@ -18,18 +18,16 @@ int main() {
     while(data.all_strategies_count > 2) {
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
             for (int_fast32_t j = i; j < data.all_strategies_count; j++) {
-//            int i = 2, j = 4;
                 play(&data, i, j);
             }
         }
 
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
-            println_strategy(data.strategies + i, data.main_digits_count);
+            println_strategy(&data, i);
         }
         println("\n");
 
         remove_strategies(&data);
-
         println("----------------------------------");
     }
 

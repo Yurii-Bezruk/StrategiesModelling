@@ -39,19 +39,17 @@ void println_binary(int_fast32_t x, int_fast32_t digits);
 /**
 * Function for printing the strategy object in readable form
 * form without line separator.
-* @param str - pointer for strategy object
-* @param main_digits_count - count of digits of the main
-*   strategy name to be presented.
+* @param data - pointer for Strategy_data with needed strategies and parameters
+* @param index - index of strategy to be printed
 */
-void print_strategy(Strategy* str, int_fast32_t main_digits_count);
+void print_strategy(Strategy_data* data, int_fast32_t index);
 
 /**
 * Function for printing the strategy object in readable form
 * form with line separator.
-* @param str - pointer for strategy object
-* @param main_digits_count - count of digits of the main
-*   strategy name to be presented.
+* @param data - pointer for Strategy_data with needed strategies and parameters
+* @param index - index of strategy to be printed
 */
-void println_strategy(Strategy* str, int_fast32_t main_digits_count);
+void println_strategy(Strategy_data* data, int_fast32_t index);
 
 #endif // PRINT_H_INCLUDED

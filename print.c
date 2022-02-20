@@ -11,15 +11,15 @@ void println_binary(int_fast32_t x, int_fast32_t digits) {
     printf("\n");
 }
 
-void print_strategy(Strategy* str, int_fast32_t main_digits_count) {
+void print_strategy(Strategy_data* data, int_fast32_t index) {
     print("[");
-    print_binary(str->first_move, main_digits_count / 2);
+    print_binary(data->strategies[index].first_move, data->main_digits_count / 2);
     print("]");
-    print_binary(str->name, main_digits_count);
-    printf("\t%d", str->points);
+    print_binary(data->strategies[index].name, data->main_digits_count);
+    printf("\t%d", data->strategies[index].points);
 }
 
-void println_strategy(Strategy* str, int_fast32_t main_digits_count) {
-    print_strategy(str, main_digits_count);
+void println_strategy(Strategy_data* data, int_fast32_t index) {
+    print_strategy(data, index);
     printf("\n");
 }
