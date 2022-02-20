@@ -87,3 +87,24 @@ void delete_Strategy_data(Strategy_data* this) {
     free(this->strategies);
     free(this);
 }
+
+uint_fast32_t* init_complexity_array(int_fast32_t strategy_count){
+    uint_fast32_t* arr = (uint_fast32_t*)malloc(sizeof(uint_fast32_t) * strategy_count);
+    for (int_fast32_t i = 0; i < strategy_count; i++){
+        arr[i] = -1;
+    }
+    arr[0] = 0;
+    return arr;
+}
+
+uint_fast8_t get_complexity(uint_fast8_t name, uint_fast32_t* complexity_arr, int_fast32_t size){
+    if(complexity_arr[name] == -1) {
+        uint_fast8_t reflection = 0;
+        append_move(reflection, abs(bit_at(name, 0) - bit_at(name, size - 1)), size);
+        for (int_fast32_t i = size - 1; i > 0; i--) {
+            append_move(reflection, abs(bit_at(name, i) - bit_at(name, i - 1)), size);
+        }
+        complexity_arr[name] = 1 + get_complexity(reflection, complexity_arr, size);
+    }
+    return complexity_arr[name];
+}

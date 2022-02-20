@@ -32,4 +32,13 @@ int main() {
     }
 
     delete_Strategy_data(&data);
+
+    uint_fast32_t* arr = init_complexity_array(all_strategies_count);
+
+    for (int_fast32_t i = 0; i < all_strategies_count; i+= sub_strategies_count) {
+        printf("%d\n", get_complexity(strategies[i].name, arr, main_digits_count));
+    }
+
+    free(arr);
+
 }
