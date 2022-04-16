@@ -15,6 +15,15 @@ int_fast32_t MATRIX[2][2] = {
 int main() {
     Strategy_data data = *create_Strategy_data(MEMORY_DEPTH, ITERATIONS_COUNT, MATRIX);
 
+    uint_fast32_t* arr = init_complexity_array(data.all_strategies_count);
+
+    for (int_fast32_t i = 0; i < data.all_strategies_count; i+= data.sub_strategies_count) {
+        printf("%d : %d\n", data.strategies[i].name, get_complexity(data.strategies[i].name, arr, data.main_digits_count));
+    }
+
+    free(arr);
+    printf("\n");
+
     while(data.all_strategies_count > 2) {
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
             for (int_fast32_t j = i; j < data.all_strategies_count; j++) {
@@ -32,13 +41,4 @@ int main() {
     }
 
     delete_Strategy_data(&data);
-
-    uint_fast32_t* arr = init_complexity_array(all_strategies_count);
-
-    for (int_fast32_t i = 0; i < all_strategies_count; i+= sub_strategies_count) {
-        printf("%d\n", get_complexity(strategies[i].name, arr, main_digits_count));
-    }
-
-    free(arr);
-
 }
