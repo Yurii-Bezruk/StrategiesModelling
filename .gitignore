@@ -66,6 +66,7 @@ _backup_*
 # MakeFiles
 CMakeLists.*
 *.make
+Makefile*
 
 # CLion dirs
 cmake-build-debug/*
