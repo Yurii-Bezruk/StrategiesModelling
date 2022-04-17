@@ -1,11 +1,11 @@
 #ifndef BINARY_H_INCLUDED
 #define BINARY_H_INCLUDED
-#include <math.h>
+#include "power.h"
 
 /**
 * Returns value of @position bit of @number
 */
-#define bit_at(number, position) ((number & ((int)pow(2, position))) != 0 ? 1 : 0)
+#define bit_at(number, position) ((number & ((int)power(position))) != 0 ? 1 : 0)
 
 /**
 * Returns new value after appending agent move to moves history using binary operators.
