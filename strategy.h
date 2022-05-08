@@ -37,6 +37,15 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t it
 void play(Strategy_data* this, int_fast32_t i, int_fast32_t j);
 
 /**
+* Function for averaging points of family of strategies with the same name
+* but different sub-strategies. Should be called before removing
+* @param this - object of Strategy_data with needed strategies and parameters
+*/
+void average_strategies(Strategy_data* this);
+
+/**
+* NOTE! call average_strategies() function first!!!
+*
 * Function for removing family of strategies with minimum points
 * @param this - object of Strategy_data with needed strategies and parameters
 */

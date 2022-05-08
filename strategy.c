@@ -84,26 +84,25 @@ void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
     }
 }
 
+void average_strategies(Strategy_data* this){
+    for (int_fast32_t i = 0; i < this->all_strategies_count; i += this->sub_strategies_count) {
+        for (int_fast32_t j = i + 1; j < i + this->sub_strategies_count; j++) {
+            this->strategies[i].points += this->strategies[j].points;
+            this->strategies[j].points = 0;
+        }
+        this->strategies[i].points /= this->sub_strategies_count;
+    }
+}
+
 static int_fast32_t find_min_strategy(Strategy_data* this) {
     uint_fast32_t min = INT_MAX;
     uint_fast32_t min_index;
     for (int_fast32_t i = 0; i < this->all_strategies_count; i += this->sub_strategies_count) {
-        uint_fast32_t points = this->strategies[i].points;
-        this->strategies[i].points = 0;
-
-        for (int_fast32_t j = i + 1; j < i + this->sub_strategies_count; j++) {
-            points += this->strategies[j].points;
-            this->strategies[j].points = 0;
-        }
-
-        points /= this->sub_strategies_count;
-        if(points < min) {
-            min = points;
+        if(this->strategies[i].points < min) {
+            min = this->strategies[i].points;
             min_index = i;
         }
-
-//        print_binary(this->strategies[i].name, this->main_digits_count);
-//        printf("\t%d\n", points);
+        this->strategies[i].points = 0;
     }
     return min_index;
 }
