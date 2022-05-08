@@ -18,7 +18,7 @@ void print_strategy(Strategy_data* data, int_fast32_t index) {
         print("]");
     }
     print_binary(data->strategies[index].name, data->main_digits_count);
-    printf("\t%u", data->strategies[index].points);
+    printf(" (%u)\t%lu", data->strategies[index].complexity, data->strategies[index].points);
 }
 
 void println_strategy(Strategy_data* data, int_fast32_t index) {

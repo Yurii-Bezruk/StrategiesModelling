@@ -6,7 +6,7 @@ typedef struct {
     uint_fast8_t name;
     uint_fast8_t sub_strategies;
     uint_fast8_t prev_move;
-    //uint_fast8_t first_move;
+    uint_fast8_t complexity;
     uint_fast64_t points;
 } Strategy;
 

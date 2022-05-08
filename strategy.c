@@ -1,11 +1,12 @@
 #include "strategy.h"
 #include "power.h"
 #include "binary.h"
+#include "memory.h"
 #include <stdlib.h>
 #include <limits.h>
 
 Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t matrix[2][2]) {
-    Strategy_data* this = (Strategy_data*) malloc(sizeof(Strategy_data));
+    Strategy_data* this = new(Strategy_data, 1);
 
     this->matrix[0][0] = matrix[0][0];
     this->matrix[0][1] = matrix[0][1];
@@ -22,16 +23,21 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t it
     }
     this->sub_strategies_count  = power(this->sub_digits_count);
     this->all_strategies_count  = this->main_strategies_count * this->sub_strategies_count;
-    this->strategies            = (Strategy*) malloc(sizeof(Strategy) * this->all_strategies_count);
+    this->strategies            = new(Strategy, this->all_strategies_count);
+
+    uint_fast32_t* complexities = init_complexity_array(this->all_strategies_count);
 
     for (int_fast32_t i = 0, strat_index = 0; i < this->main_strategies_count; i++) {
+        this->strategies[i * this->sub_strategies_count].complexity = get_complexity(i, complexities, this->main_digits_count);
         for (int_fast32_t j = 0; j < this->sub_strategies_count; j++, strat_index++) {
             this->strategies[strat_index].name = i;
             this->strategies[strat_index].sub_strategies = j;
             this->strategies[strat_index].prev_move = 0;
+            this->strategies[strat_index].complexity = this->strategies[i * this->sub_strategies_count].complexity;
             this->strategies[strat_index].points = 0;
         }
     }
+    free(complexities);
     return this;
 }
 
@@ -116,7 +122,7 @@ void delete_Strategy_data(Strategy_data* this) {
 }
 
 uint_fast32_t* init_complexity_array(int_fast32_t strategy_count){
-    uint_fast32_t* arr = (uint_fast32_t*)malloc(sizeof(uint_fast32_t) * strategy_count);
+    uint_fast32_t* arr = new(uint_fast32_t, strategy_count);
     for (int_fast32_t i = 0; i < strategy_count; i++){
         arr[i] = -1;
     }

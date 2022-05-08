@@ -18,19 +18,8 @@ int main() {
 //        printf("%d: ", i);
 //        println_strategy(&data, i);
 //    }
-//    println_strategy(&data, 26636);
-//    println_strategy(&data, 23771);
 
     //play(&data, 26636, 23771);
-
-    uint_fast32_t* arr = init_complexity_array(data.all_strategies_count);
-
-    for (int_fast32_t i = 0; i < data.all_strategies_count; i+= data.sub_strategies_count) {
-        printf("%d : %d\n", data.strategies[i].name, get_complexity(data.strategies[i].name, arr, data.main_digits_count));
-    }
-
-    free(arr);
-    printf("\n");
 
     //while(data.all_strategies_count > 2) {
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
