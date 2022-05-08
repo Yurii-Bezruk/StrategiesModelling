@@ -12,11 +12,13 @@ void println_binary(int_fast32_t x, int_fast32_t digits) {
 }
 
 void print_strategy(Strategy_data* data, int_fast32_t index) {
-    print("[");
-    print_binary(data->strategies[index].first_move, data->main_digits_count / 2);
-    print("]");
+    for (int i = 0; i < data->memory_depth + 1; i++){
+        print("[");
+        print_binary(data->strategies[index].sub_strategies / power(i), power(i));
+        print("]");
+    }
     print_binary(data->strategies[index].name, data->main_digits_count);
-    printf("\t%d", data->strategies[index].points);
+    printf("\t%u", data->strategies[index].points);
 }
 
 void println_strategy(Strategy_data* data, int_fast32_t index) {

@@ -4,13 +4,15 @@
 
 typedef struct {
     uint_fast8_t name;
+    uint_fast8_t sub_strategies;
     uint_fast8_t prev_move;
-    uint_fast8_t first_move;
+    //uint_fast8_t first_move;
     uint_fast64_t points;
 } Strategy;
 
 typedef struct {
     int_fast32_t matrix[2][2];
+    int_fast32_t memory_depth;
     int_fast32_t iterations_count;
     int_fast32_t main_digits_count;
     int_fast32_t main_strategies_count;
@@ -42,6 +44,7 @@ void remove_strategies(Strategy_data* this);
 
 /**
 * Destructor of Strategy_data object. Frees all memory
+* @param this - object of Strategy_data to be freed
 */
 void delete_Strategy_data(Strategy_data* this);
 
