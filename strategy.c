@@ -117,7 +117,7 @@ void remove_strategies(Strategy_data* this) {
 
 void delete_Strategy_data(Strategy_data* this) {
     free(this->strategies);
-    free(this);
+    //free(this);
 }
 
 uint_fast32_t* init_complexity_array(int_fast32_t strategy_count){
