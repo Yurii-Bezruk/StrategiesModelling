@@ -48,11 +48,16 @@ void init_global_params(int argc, char** argv){
             println("Options:");
             println("\t-h                                      Print help (this message)");
             println("\t-i <number>                             Set iterations count for every two strategies");
+            println("\t-g <number>                             Set coefficient of small group");
             println("\t-d <number>                             Set strategy memory depth");
-            println("\t-m <number> <number> <number> <number>  Set reward matrix for strategies");
+            println("\t-m <number> <number> <number> <number>  Set reward matrix for big group of strategies");
+            println("\t-o <number> <number> <number> <number>  Set reward matrix for small group of strategies to another members of small group");
+            println("\t-f <number> <number> <number> <number>  Set reward matrix for small group of strategies to members of big group");
             exit(0);
         } else if(strcmp(argv[i], "-i") == 0 && (i + 1) < argc){
             ITERATIONS_COUNT = atoi(argv[++i]);
+        } else if(strcmp(argv[i], "-g") == 0 && (i + 1) < argc){
+            GROUP_SIZE = atoi(argv[++i]);
         } else if(strcmp(argv[i], "-d") == 0 && (i + 1) < argc){
             MEMORY_DEPTH = atoi(argv[++i]);
         } else if(strcmp(argv[i], "-m") == 0 && (i + 4) < argc){
@@ -79,20 +84,6 @@ void delete_matrixes(){
 int main(int argc, char** argv) {
     init_global_params(argc, argv);
     Strategy_data data = *create_Strategy_data(MEMORY_DEPTH, GROUP_SIZE, ITERATIONS_COUNT, MATRIX, OWN_MATRIX, FOREIGN_MATRIX);
-
-//    int arr[9];
-//    for (int i = 0; i < 9; i++){
-//        arr[i] = 0;
-//    }
-//    for (int i = 0; i < data.all_strategies_count; i += data.sub_strategies_count){
-//        if(data.strategies[i].group == GROUP_SMALL){
-//            arr[data.strategies[i].complexity]++;
-//        }
-//    }
-//    for (int i = 0; i < 9; i++){
-//        printf("(%d) - %d\n", i, arr[i]);
-//    }
-//    print_main_strategies(&data);
 
     while(data.all_strategies_count >= 2 * data.sub_strategies_count) {
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
