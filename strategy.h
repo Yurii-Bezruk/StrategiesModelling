@@ -7,11 +7,12 @@ typedef struct {
     uint_fast8_t sub_strategies;
     uint_fast8_t prev_move;
     uint_fast8_t complexity;
+    int_fast32_t** own_matrix;
+    int_fast32_t** foreign_matrix;
     uint_fast64_t points;
 } Strategy;
 
 typedef struct {
-    int_fast32_t matrix[2][2];
     int_fast32_t memory_depth;
     int_fast32_t iterations_count;
     int_fast32_t main_digits_count;
@@ -26,7 +27,7 @@ typedef struct {
 * Constructor of Strategy_data object. Initializes all strategies
 * and parameters with default values.
 */
-Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t matrix[2][2]);
+Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t** matrix, int_fast32_t** own_matrix, int_fast32_t** foreign_matrix);
 
 /**
 * Function for playing iterative interaction of 2 strategies

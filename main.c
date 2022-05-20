@@ -5,15 +5,42 @@
 #include "print.h"
 #include "binary.h"
 #include "strategy.h"
+#include "memory.h"
 
-uint_fast32_t MEMORY_DEPTH = 1;
-uint_fast32_t ITERATIONS_COUNT = 100;
-int_fast32_t MATRIX[2][2] = {
-    {1, 5},
-    {0, 3}
-};
+uint_fast32_t MEMORY_DEPTH;
+uint_fast32_t ITERATIONS_COUNT;
+int_fast32_t** MATRIX;
+int_fast32_t** OWN_MATRIX;
+int_fast32_t** FOREIGN_MATRIX;
 
 void init_global_params(int argc, char** argv){
+    MEMORY_DEPTH = 1;
+    ITERATIONS_COUNT = 100;
+
+    MATRIX = new(int_fast32_t*, 2);
+    MATRIX[0] = new(int_fast32_t, 2);
+    MATRIX[1] = new(int_fast32_t, 2);
+    MATRIX[0][0] = 1;
+    MATRIX[0][1] = 5;
+    MATRIX[1][0] = 0;
+    MATRIX[1][1] = 3;
+
+    OWN_MATRIX = new(int_fast32_t*, 2);
+    OWN_MATRIX[0] = new(int_fast32_t, 2);
+    OWN_MATRIX[1] = new(int_fast32_t, 2);
+    OWN_MATRIX[0][0] = 1;
+    OWN_MATRIX[0][1] = 5;
+    OWN_MATRIX[1][0] = 0;
+    OWN_MATRIX[1][1] = 3;
+
+    FOREIGN_MATRIX = new(int_fast32_t*, 2);
+    FOREIGN_MATRIX[0] = new(int_fast32_t, 2);
+    FOREIGN_MATRIX[1] = new(int_fast32_t, 2);
+    FOREIGN_MATRIX[0][0] = 1;
+    FOREIGN_MATRIX[0][1] = 5;
+    FOREIGN_MATRIX[1][0] = 0;
+    FOREIGN_MATRIX[1][1] = 3;
+
     for (int i = 0; i < argc; i++){
         if(strcmp(argv[i], "-h") == 0){
             println("Options:");
@@ -35,10 +62,21 @@ void init_global_params(int argc, char** argv){
     }
 }
 
+void delete_matrixes(){
+    free(MATRIX[0]);
+    free(MATRIX[1]);
+    free(MATRIX);
+    free(OWN_MATRIX[0]);
+    free(OWN_MATRIX[1]);
+    free(OWN_MATRIX);
+    free(FOREIGN_MATRIX[0]);
+    free(FOREIGN_MATRIX[1]);
+    free(FOREIGN_MATRIX);
+}
+
 int main(int argc, char** argv) {
     init_global_params(argc, argv);
-
-    Strategy_data data = *create_Strategy_data(MEMORY_DEPTH, ITERATIONS_COUNT, MATRIX);
+    Strategy_data data = *create_Strategy_data(MEMORY_DEPTH, ITERATIONS_COUNT, MATRIX, OWN_MATRIX, FOREIGN_MATRIX);
 
     while(data.all_strategies_count >= 2 * data.sub_strategies_count) {
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
@@ -51,9 +89,10 @@ int main(int argc, char** argv) {
         average_strategies(&data);
         print_main_strategies(&data);
         remove_strategies(&data);
-        printf("%d/%d\n", data.all_strategies_count, 2 * data.sub_strategies_count);
+        printf("%d/2\n", data.all_strategies_count / data.sub_strategies_count);
         println("----------------------------------");
     }
 
     delete_Strategy_data(&data);
+    delete_matrixes();
 }

@@ -5,13 +5,8 @@
 #include <stdlib.h>
 #include <limits.h>
 
-Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t matrix[2][2]) {
+Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t** matrix, int_fast32_t** own_matrix, int_fast32_t** foreign_matrix) {
     Strategy_data* this = new(Strategy_data, 1);
-
-    this->matrix[0][0] = matrix[0][0];
-    this->matrix[0][1] = matrix[0][1];
-    this->matrix[1][0] = matrix[1][0];
-    this->matrix[1][1] = matrix[1][1];
 
     this->memory_depth          = memory_depth;
     this->iterations_count      = iterations_count;
@@ -34,6 +29,8 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t it
             this->strategies[strat_index].sub_strategies = j;
             this->strategies[strat_index].prev_move = 0;
             this->strategies[strat_index].complexity = this->strategies[i * this->sub_strategies_count].complexity;
+            this->strategies[strat_index].own_matrix = matrix;
+            this->strategies[strat_index].foreign_matrix = matrix;
             this->strategies[strat_index].points = 0;
         }
     }
@@ -51,9 +48,9 @@ void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
         s1_move = bit_at(this->strategies[i].sub_strategies / power(sub_iteration), this->strategies[j].prev_move);
         s2_move = bit_at(this->strategies[j].sub_strategies / power(sub_iteration), this->strategies[i].prev_move);
 
-        this->strategies[i].points += this->matrix[s1_move][s2_move];
+        this->strategies[i].points += this->strategies[i].own_matrix[s1_move][s2_move];
         if(i != j) {
-            this->strategies[j].points += this->matrix[s2_move][s1_move];
+            this->strategies[j].points += this->strategies[j].own_matrix[s2_move][s1_move];
         }
         append_move(this->strategies[i].prev_move, s1_move, prev_move_size);
         append_move(this->strategies[j].prev_move, s2_move, prev_move_size);
@@ -70,9 +67,9 @@ void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
         s1_move = bit_at(this->strategies[i].name, this->strategies[j].prev_move);
         s2_move = bit_at(this->strategies[j].name, this->strategies[i].prev_move);
 
-        this->strategies[i].points += this->matrix[s1_move][s2_move];
+        this->strategies[i].points += this->strategies[i].own_matrix[s1_move][s2_move];
         if(i != j) {
-            this->strategies[j].points += this->matrix[s2_move][s1_move];
+            this->strategies[j].points += this->strategies[j].own_matrix[s2_move][s1_move];
         }
         append_move(this->strategies[i].prev_move, s1_move, prev_move_size);
         append_move(this->strategies[j].prev_move, s2_move, prev_move_size);
