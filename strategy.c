@@ -5,15 +5,16 @@
 #include <stdlib.h>
 #include <limits.h>
 
-Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t** matrix, int_fast32_t** own_matrix, int_fast32_t** foreign_matrix) {
+Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t group_size, uint_fast32_t iterations_count, int_fast32_t** matrix, int_fast32_t** own_matrix, int_fast32_t** foreign_matrix){
     Strategy_data* this = new(Strategy_data, 1);
 
     this->memory_depth          = memory_depth;
+    this->group_size            = group_size;
     this->iterations_count      = iterations_count;
     this->main_digits_count     = power(memory_depth + 1);
     this->main_strategies_count = power(this->main_digits_count);
     this->sub_digits_count      = 0;
-    for (int_fast32_t i = 0; i < this->memory_depth + 1; i++){
+    for (int_fast32_t i = 0; i < this->memory_depth + 1; i++) {
         this->sub_digits_count += power(i);
     }
     this->sub_strategies_count  = power(this->sub_digits_count);
@@ -29,13 +30,34 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t it
             this->strategies[strat_index].sub_strategies = j;
             this->strategies[strat_index].prev_move = 0;
             this->strategies[strat_index].complexity = this->strategies[i * this->sub_strategies_count].complexity;
-            this->strategies[strat_index].own_matrix = matrix;
-            this->strategies[strat_index].foreign_matrix = matrix;
             this->strategies[strat_index].points = 0;
+            if(i % this->group_size == 0) {
+                this->strategies[strat_index].group = GROUP_SMALL;
+                this->strategies[strat_index].own_matrix = own_matrix;
+                this->strategies[strat_index].foreign_matrix = foreign_matrix;
+            } else {
+                this->strategies[strat_index].group = GROUP_BIG;
+                this->strategies[strat_index].own_matrix = matrix;
+            }
         }
     }
     free(complexities);
     return this;
+}
+
+static void calculate_points(Strategy_data* this, int_fast32_t i, int_fast32_t j, int_fast32_t s1_move, int_fast32_t s2_move) {
+    if(this->strategies[i].group == this->strategies[j].group) {
+        this->strategies[i].points += this->strategies[i].own_matrix[s1_move][s2_move];
+        if(i != j) {
+            this->strategies[j].points += this->strategies[j].own_matrix[s2_move][s1_move];
+        }
+    } else if(this->strategies[i].group == GROUP_SMALL && this->strategies[j].group == GROUP_BIG) {
+        this->strategies[i].points += this->strategies[i].foreign_matrix[s1_move][s2_move];
+        this->strategies[j].points += this->strategies[j].own_matrix[s2_move][s1_move];
+    } else {
+        this->strategies[i].points += this->strategies[i].own_matrix[s1_move][s2_move];
+        this->strategies[j].points += this->strategies[j].foreign_matrix[s2_move][s1_move];
+    }
 }
 
 void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
@@ -48,10 +70,8 @@ void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
         s1_move = bit_at(this->strategies[i].sub_strategies / power(sub_iteration), this->strategies[j].prev_move);
         s2_move = bit_at(this->strategies[j].sub_strategies / power(sub_iteration), this->strategies[i].prev_move);
 
-        this->strategies[i].points += this->strategies[i].own_matrix[s1_move][s2_move];
-        if(i != j) {
-            this->strategies[j].points += this->strategies[j].own_matrix[s2_move][s1_move];
-        }
+        calculate_points(this, i, j, s1_move, s2_move);
+
         append_move(this->strategies[i].prev_move, s1_move, prev_move_size);
         append_move(this->strategies[j].prev_move, s2_move, prev_move_size);
 
@@ -67,10 +87,8 @@ void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
         s1_move = bit_at(this->strategies[i].name, this->strategies[j].prev_move);
         s2_move = bit_at(this->strategies[j].name, this->strategies[i].prev_move);
 
-        this->strategies[i].points += this->strategies[i].own_matrix[s1_move][s2_move];
-        if(i != j) {
-            this->strategies[j].points += this->strategies[j].own_matrix[s2_move][s1_move];
-        }
+        calculate_points(this, i, j, s1_move, s2_move);
+
         append_move(this->strategies[i].prev_move, s1_move, prev_move_size);
         append_move(this->strategies[j].prev_move, s2_move, prev_move_size);
 
@@ -81,7 +99,7 @@ void play(Strategy_data* this, int_fast32_t i, int_fast32_t j) {
     }
 }
 
-void average_strategies(Strategy_data* this){
+void average_strategies(Strategy_data* this) {
     for (int_fast32_t i = 0; i < this->all_strategies_count; i += this->sub_strategies_count) {
         for (int_fast32_t j = i + 1; j < i + this->sub_strategies_count; j++) {
             this->strategies[i].points += this->strategies[j].points;
@@ -117,16 +135,16 @@ void delete_Strategy_data(Strategy_data* this) {
     //free(this);
 }
 
-uint_fast32_t* init_complexity_array(int_fast32_t strategy_count){
+uint_fast32_t* init_complexity_array(int_fast32_t strategy_count) {
     uint_fast32_t* arr = new(uint_fast32_t, strategy_count);
-    for (int_fast32_t i = 0; i < strategy_count; i++){
+    for (int_fast32_t i = 0; i < strategy_count; i++) {
         arr[i] = -1;
     }
     arr[0] = 0;
     return arr;
 }
 
-uint_fast8_t get_complexity(uint_fast8_t name, uint_fast32_t* complexity_arr, int_fast32_t size){
+uint_fast8_t get_complexity(uint_fast8_t name, uint_fast32_t* complexity_arr, int_fast32_t size) {
     if(complexity_arr[name] == -1) {
         uint_fast8_t reflection = 0;
         append_move(reflection, abs(bit_at(name, 0) - bit_at(name, size - 1)), size);

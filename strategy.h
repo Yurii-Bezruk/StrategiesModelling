@@ -1,6 +1,8 @@
 #ifndef STRATEGY_H_INCLUDED
 #define STRATEGY_H_INCLUDED
 #include <stdint.h>
+#define GROUP_SMALL 0
+#define GROUP_BIG 1
 
 typedef struct {
     uint_fast8_t name;
@@ -10,10 +12,12 @@ typedef struct {
     int_fast32_t** own_matrix;
     int_fast32_t** foreign_matrix;
     uint_fast64_t points;
+    uint8_t group;
 } Strategy;
 
 typedef struct {
     int_fast32_t memory_depth;
+    int_fast32_t group_size;
     int_fast32_t iterations_count;
     int_fast32_t main_digits_count;
     int_fast32_t main_strategies_count;
@@ -27,7 +31,7 @@ typedef struct {
 * Constructor of Strategy_data object. Initializes all strategies
 * and parameters with default values.
 */
-Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t iterations_count, int_fast32_t** matrix, int_fast32_t** own_matrix, int_fast32_t** foreign_matrix);
+Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t group_size, uint_fast32_t iterations_count, int_fast32_t** matrix, int_fast32_t** own_matrix, int_fast32_t** foreign_matrix);
 
 /**
 * Function for playing iterative interaction of 2 strategies

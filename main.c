@@ -8,6 +8,7 @@
 #include "memory.h"
 
 uint_fast32_t MEMORY_DEPTH;
+uint_fast32_t GROUP_SIZE;
 uint_fast32_t ITERATIONS_COUNT;
 int_fast32_t** MATRIX;
 int_fast32_t** OWN_MATRIX;
@@ -15,6 +16,7 @@ int_fast32_t** FOREIGN_MATRIX;
 
 void init_global_params(int argc, char** argv){
     MEMORY_DEPTH = 1;
+    GROUP_SIZE = 4;
     ITERATIONS_COUNT = 100;
 
     MATRIX = new(int_fast32_t*, 2);
@@ -28,18 +30,18 @@ void init_global_params(int argc, char** argv){
     OWN_MATRIX = new(int_fast32_t*, 2);
     OWN_MATRIX[0] = new(int_fast32_t, 2);
     OWN_MATRIX[1] = new(int_fast32_t, 2);
-    OWN_MATRIX[0][0] = 1;
-    OWN_MATRIX[0][1] = 5;
-    OWN_MATRIX[1][0] = 0;
-    OWN_MATRIX[1][1] = 3;
+    OWN_MATRIX[0][0] = 0;
+    OWN_MATRIX[0][1] = 1;
+    OWN_MATRIX[1][0] = 3;
+    OWN_MATRIX[1][1] = 5;
 
     FOREIGN_MATRIX = new(int_fast32_t*, 2);
     FOREIGN_MATRIX[0] = new(int_fast32_t, 2);
     FOREIGN_MATRIX[1] = new(int_fast32_t, 2);
-    FOREIGN_MATRIX[0][0] = 1;
-    FOREIGN_MATRIX[0][1] = 5;
+    FOREIGN_MATRIX[0][0] = 2;
+    FOREIGN_MATRIX[0][1] = 6;
     FOREIGN_MATRIX[1][0] = 0;
-    FOREIGN_MATRIX[1][1] = 3;
+    FOREIGN_MATRIX[1][1] = 2;
 
     for (int i = 0; i < argc; i++){
         if(strcmp(argv[i], "-h") == 0){
@@ -76,7 +78,21 @@ void delete_matrixes(){
 
 int main(int argc, char** argv) {
     init_global_params(argc, argv);
-    Strategy_data data = *create_Strategy_data(MEMORY_DEPTH, ITERATIONS_COUNT, MATRIX, OWN_MATRIX, FOREIGN_MATRIX);
+    Strategy_data data = *create_Strategy_data(MEMORY_DEPTH, GROUP_SIZE, ITERATIONS_COUNT, MATRIX, OWN_MATRIX, FOREIGN_MATRIX);
+
+//    int arr[9];
+//    for (int i = 0; i < 9; i++){
+//        arr[i] = 0;
+//    }
+//    for (int i = 0; i < data.all_strategies_count; i += data.sub_strategies_count){
+//        if(data.strategies[i].group == GROUP_SMALL){
+//            arr[data.strategies[i].complexity]++;
+//        }
+//    }
+//    for (int i = 0; i < 9; i++){
+//        printf("(%d) - %d\n", i, arr[i]);
+//    }
+//    print_main_strategies(&data);
 
     while(data.all_strategies_count >= 2 * data.sub_strategies_count) {
         for (int_fast32_t i = 0; i < data.all_strategies_count; i++) {
@@ -86,10 +102,11 @@ int main(int argc, char** argv) {
         }
 
         print_all_strategies(&data);
+        printf("%d/2\n", data.all_strategies_count / data.sub_strategies_count);
+
         average_strategies(&data);
         print_main_strategies(&data);
         remove_strategies(&data);
-        printf("%d/2\n", data.all_strategies_count / data.sub_strategies_count);
         println("----------------------------------");
     }
 

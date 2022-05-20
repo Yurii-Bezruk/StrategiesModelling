@@ -18,7 +18,8 @@ void print_strategy(Strategy_data* data, int_fast32_t index) {
         print("]");
     }
     print_binary(data->strategies[index].name, data->main_digits_count);
-    printf(" (%u)\t%lu", data->strategies[index].complexity, data->strategies[index].points);
+    printf(" (%u) \t%lu ", data->strategies[index].complexity, data->strategies[index].points);
+    print((data->strategies[index].group == GROUP_BIG) ? "BIG" : "SMALL");
 }
 
 void println_strategy(Strategy_data* data, int_fast32_t index) {
@@ -36,7 +37,8 @@ void print_all_strategies(Strategy_data* data) {
 void print_main_strategies(Strategy_data* data) {
     for (int_fast32_t i = 0; i < data->all_strategies_count; i += data->sub_strategies_count) {
         print_binary(data->strategies[i].name, data->main_digits_count);
-        printf(" (%u)\t%lu\n", data->strategies[i].complexity, data->strategies[i].points);
+        printf(" (%u)\t%lu ", data->strategies[i].complexity, data->strategies[i].points);
+        println((data->strategies[i].group == GROUP_BIG) ? "BIG" : "SMALL");
     }
     println("\n");
 }
