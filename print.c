@@ -57,7 +57,7 @@ void print_complexities(Strategy_data* data){
         printf("(%d) - %d   %d\n", i, data->complexity_counters[i], data->small_complexity_counters[i]);
     }
     printf("Average complexity: %f\n", average_complexity / summary_complexity);
-    printf("Average small group complexity: %f\n", small_average_complexity / small_summary_complexity);
+    printf("Average small group complexity: %f\n", (data->group_count == 0)? 0 : small_average_complexity / small_summary_complexity);
 }
 
 void print_aggressiveness(Strategy_data* data){
@@ -70,5 +70,6 @@ void print_aggressiveness(Strategy_data* data){
         average_aggressiveness += data->strategies[i].aggresiveness;
     }
     printf("Average aggressiveness: %f\n", average_aggressiveness / (data->all_strategies_count / data->sub_strategies_count));
-    printf("Average small group aggressiveness: %f\n", small_average_aggressiveness / data->group_count);
+    printf("Average small group aggressiveness: %f\n", (data->group_count == 0)? 0 : small_average_aggressiveness / data->group_count);
 }
+
