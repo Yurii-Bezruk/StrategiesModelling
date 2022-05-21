@@ -44,8 +44,13 @@ void print_main_strategies(Strategy_data* data) {
 }
 
 void print_complexities(Strategy_data* data){
-    for (int i = 0; i < data->complexity_count; i++){
+    double average_complexity = 0.0;
+    int_fast32_t summary_complexity = 0;
+    for (int_fast32_t i = 0; i < data->complexity_count; i++){
+        average_complexity += i * data->complexity_counters[i];
+        summary_complexity += data->complexity_counters[i];
         printf("(%d) - %d\n", i, data->complexity_counters[i]);
     }
+    printf("Average: %f\n", average_complexity / summary_complexity);
 }
 
