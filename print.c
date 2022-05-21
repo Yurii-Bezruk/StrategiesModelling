@@ -31,7 +31,7 @@ void print_all_strategies(Strategy_data* data) {
     for (int_fast32_t i = 0; i < data->all_strategies_count; i++) {
         println_strategy(data, i);
     }
-    println("\n");
+    print("\n");
 }
 
 void print_main_strategies(Strategy_data* data) {
@@ -40,6 +40,12 @@ void print_main_strategies(Strategy_data* data) {
         printf(" (%u)\t%lu ", data->strategies[i].complexity, data->strategies[i].points);
         println((data->strategies[i].group == GROUP_BIG) ? "BIG" : "SMALL");
     }
-    println("\n");
+    print("\n");
+}
+
+void print_complexities(Strategy_data* data){
+    for (int i = 0; i < data->complexity_count; i++){
+        printf("(%d) - %d\n", i, data->complexity_counters[i]);
+    }
 }
 

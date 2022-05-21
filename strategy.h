@@ -24,6 +24,8 @@ typedef struct {
     int_fast32_t sub_digits_count;
     int_fast32_t sub_strategies_count;
     int_fast32_t all_strategies_count;
+    int_fast32_t complexity_count;
+    int_fast32_t* complexity_counters;
     Strategy* strategies;
 } Strategy_data;
 

@@ -31,8 +31,8 @@ void init_global_params(int argc, char** argv){
     OWN_MATRIX[0] = new(int_fast32_t, 2);
     OWN_MATRIX[1] = new(int_fast32_t, 2);
     OWN_MATRIX[0][0] = 0;
-    OWN_MATRIX[0][1] = 1;
-    OWN_MATRIX[1][0] = 3;
+    OWN_MATRIX[0][1] = 3;
+    OWN_MATRIX[1][0] = 2;
     OWN_MATRIX[1][1] = 5;
 
     FOREIGN_MATRIX = new(int_fast32_t*, 2);
@@ -65,6 +65,16 @@ void init_global_params(int argc, char** argv){
             MATRIX[0][1] = atoi(argv[++i]);
             MATRIX[1][0] = atoi(argv[++i]);
             MATRIX[1][1] = atoi(argv[++i]);
+        } else if(strcmp(argv[i], "-o") == 0 && (i + 4) < argc){
+            OWN_MATRIX[0][0] = atoi(argv[++i]);
+            OWN_MATRIX[0][1] = atoi(argv[++i]);
+            OWN_MATRIX[1][0] = atoi(argv[++i]);
+            OWN_MATRIX[1][1] = atoi(argv[++i]);
+        } else if(strcmp(argv[i], "-f") == 0 && (i + 4) < argc){
+            FOREIGN_MATRIX[0][0] = atoi(argv[++i]);
+            FOREIGN_MATRIX[0][1] = atoi(argv[++i]);
+            FOREIGN_MATRIX[1][0] = atoi(argv[++i]);
+            FOREIGN_MATRIX[1][1] = atoi(argv[++i]);
         }
     }
 }
@@ -97,6 +107,7 @@ int main(int argc, char** argv) {
 
         average_strategies(&data);
         print_main_strategies(&data);
+        print_complexities(&data);
         remove_strategies(&data);
         println("----------------------------------");
     }

@@ -64,4 +64,10 @@ void print_all_strategies(Strategy_data* data);
 */
 void print_main_strategies(Strategy_data* data);
 
+/**
+* Function for printing summary of strategies with different complexities count
+* @param data - pointer for Strategy_data with needed strategies and parameters
+*/
+void print_complexities(Strategy_data* data);
+
 #endif // PRINT_H_INCLUDED
