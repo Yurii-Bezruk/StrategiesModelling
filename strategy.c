@@ -10,6 +10,7 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t gr
 
     this->memory_depth          = memory_depth;
     this->group_size            = group_size;
+    this->group_count           = 0;
     this->iterations_count      = iterations_count;
     this->main_digits_count     = power(memory_depth + 1);
     this->main_strategies_count = power(this->main_digits_count);
@@ -21,8 +22,10 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t gr
     this->all_strategies_count  = this->main_strategies_count * this->sub_strategies_count;
     this->complexity_count      = power(this->memory_depth + 1) + 1;
     this->complexity_counters   = new(int_fast32_t, this->complexity_count);
+    this->small_complexity_counters   = new(int_fast32_t, this->complexity_count);
     for (int i = 0; i < this->complexity_count; i++){
         this->complexity_counters[i] = 0;
+        this->small_complexity_counters[i] = 0;
     }
 
     this->strategies            = new(Strategy, this->all_strategies_count);
@@ -33,6 +36,10 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t gr
         this->strategies[i * this->sub_strategies_count].complexity = get_complexity(i, complexities, this->main_digits_count);
         this->strategies[i * this->sub_strategies_count].aggresiveness = get_aggresiveness(i, this->main_digits_count);
         this->complexity_counters[this->strategies[strat_index].complexity]++;
+        if(i % this->group_size == 0) {
+            this->small_complexity_counters[this->strategies[strat_index].complexity]++;
+            this->group_count++;
+        }
         for (int_fast32_t j = 0; j < this->sub_strategies_count; j++, strat_index++) {
             this->strategies[strat_index].name = i;
             this->strategies[strat_index].sub_strategies = j;
@@ -134,6 +141,10 @@ static int_fast32_t find_min_strategy(Strategy_data* this) {
 void remove_strategies(Strategy_data* this) {
     int_fast32_t index = find_min_strategy(this);
     this->complexity_counters[this->strategies[index].complexity]--;
+    if(this->strategies[index].group == GROUP_SMALL){
+        this->small_complexity_counters[this->strategies[index].complexity]--;
+        this->group_count--;
+    }
     for (int_fast32_t i = index + this->sub_strategies_count - 1; i >= index; i--) {
         this->strategies[i] = this->strategies[this->all_strategies_count - 1];
         this->all_strategies_count--;
@@ -142,6 +153,7 @@ void remove_strategies(Strategy_data* this) {
 
 void delete_Strategy_data(Strategy_data* this) {
     free(this->complexity_counters);
+    free(this->small_complexity_counters);
     free(this->strategies);
     //free(this);
 }

@@ -19,6 +19,7 @@ typedef struct {
 typedef struct {
     int_fast32_t memory_depth;
     int_fast32_t group_size;
+    int_fast32_t group_count;
     int_fast32_t iterations_count;
     int_fast32_t main_digits_count;
     int_fast32_t main_strategies_count;
@@ -27,6 +28,7 @@ typedef struct {
     int_fast32_t all_strategies_count;
     int_fast32_t complexity_count;
     int_fast32_t* complexity_counters;
+    int_fast32_t* small_complexity_counters;
     Strategy* strategies;
 } Strategy_data;
 
