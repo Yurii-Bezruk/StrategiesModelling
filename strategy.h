@@ -9,6 +9,7 @@ typedef struct {
     uint_fast8_t sub_strategies;
     uint_fast8_t prev_move;
     uint_fast8_t complexity;
+    double aggresiveness;
     int_fast32_t** own_matrix;
     int_fast32_t** foreign_matrix;
     uint_fast64_t points;
@@ -66,4 +67,5 @@ void delete_Strategy_data(Strategy_data* this);
 
 uint_fast32_t* init_complexity_array(int_fast32_t strategy_count);
 uint_fast8_t get_complexity(uint_fast8_t name, uint_fast32_t* complexity_arr, int_fast32_t size);
+double get_aggresiveness(uint_fast8_t name, int_fast32_t size);
 #endif // STRATEGY_H_INCLUDED

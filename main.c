@@ -108,6 +108,7 @@ int main(int argc, char** argv) {
         average_strategies(&data);
         print_main_strategies(&data);
         print_complexities(&data);
+        print_aggressiveness(&data);
         remove_strategies(&data);
         println("----------------------------------");
     }
@@ -115,6 +116,7 @@ int main(int argc, char** argv) {
     printf("%d/2\n", data.all_strategies_count / data.sub_strategies_count);
     print_main_strategies(&data);
     print_complexities(&data);
+    print_aggressiveness(&data);
 
     delete_Strategy_data(&data);
     delete_matrixes();

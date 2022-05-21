@@ -31,12 +31,14 @@ Strategy_data* create_Strategy_data(uint_fast32_t memory_depth, uint_fast32_t gr
 
     for (int_fast32_t i = 0, strat_index = 0; i < this->main_strategies_count; i++) {
         this->strategies[i * this->sub_strategies_count].complexity = get_complexity(i, complexities, this->main_digits_count);
+        this->strategies[i * this->sub_strategies_count].aggresiveness = get_aggresiveness(i, this->main_digits_count);
         this->complexity_counters[this->strategies[strat_index].complexity]++;
         for (int_fast32_t j = 0; j < this->sub_strategies_count; j++, strat_index++) {
             this->strategies[strat_index].name = i;
             this->strategies[strat_index].sub_strategies = j;
             this->strategies[strat_index].prev_move = 0;
             this->strategies[strat_index].complexity = this->strategies[i * this->sub_strategies_count].complexity;
+            this->strategies[strat_index].aggresiveness = this->strategies[i * this->sub_strategies_count].aggresiveness;
             this->strategies[strat_index].points = 0;
             if(i % this->group_size == 0) {
                 this->strategies[strat_index].group = GROUP_SMALL;
@@ -163,4 +165,14 @@ uint_fast8_t get_complexity(uint_fast8_t name, uint_fast32_t* complexity_arr, in
         complexity_arr[name] = 1 + get_complexity(reflection, complexity_arr, size);
     }
     return complexity_arr[name];
+}
+
+double get_aggresiveness(uint_fast8_t name, int_fast32_t size){
+    double counter = 0;
+    for (int i = 0; i < size; i++){
+        if(bit_at(name, i) == 0){
+            counter++;
+        }
+    }
+    return counter / size;
 }

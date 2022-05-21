@@ -70,4 +70,10 @@ void print_main_strategies(Strategy_data* data);
 */
 void print_complexities(Strategy_data* data);
 
+/**
+* Function for printing average aggressiveness of strategies;
+* @param data - pointer for Strategy_data with needed strategies and parameters
+*/
+void print_aggressiveness(Strategy_data* data);
+
 #endif // PRINT_H_INCLUDED
