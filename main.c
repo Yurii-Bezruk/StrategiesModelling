@@ -117,7 +117,6 @@ int main(int argc, char** argv) {
     }
     print_all_strategies(&data);
     printf("%d/2\n", data.all_strategies_count / data.sub_strategies_count);
-    print_points(&data);
 
     print_main_strategies(&data);
     print_complexities(&data);

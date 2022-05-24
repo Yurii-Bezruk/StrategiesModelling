@@ -63,7 +63,9 @@ void print_complexities(Strategy_data* data){
         printf("(%d) - %d   %d   %d\n", i, data->complexity_counters[i], data->small_complexity_counters[i], big_complexity_counter);
     }
     printf("Average complexity: %f\n", average_complexity / summary_complexity);
-    printf("Average small group complexity: %f\n", (data->group_count == 0)? 0 : small_average_complexity / small_summary_complexity);
+    if(data->group_count != 0){
+        printf("Average small group complexity: %f\n", small_average_complexity / small_summary_complexity);
+    }
     printf("Average big group complexity: %f\n", big_average_complexity / big_summary_complexity);
 }
 
@@ -80,7 +82,9 @@ void print_aggressiveness(Strategy_data* data){
         average_aggressiveness += data->strategies[i].aggresiveness;
     }
     printf("Average aggressiveness: %f\n", average_aggressiveness / (data->all_strategies_count / data->sub_strategies_count));
-    printf("Average small group aggressiveness: %f\n", (data->group_count == 0)? 0 : small_average_aggressiveness / data->group_count);
+    if(data->group_count != 0){
+        printf("Average small group aggressiveness: %f\n", (data->group_count == 0)? 0 : small_average_aggressiveness / data->group_count);
+    }
     printf("Average big group aggressiveness: %f\n", big_average_aggressiveness / ((data->all_strategies_count / data->sub_strategies_count) - data->group_count));
 }
 
@@ -98,6 +102,8 @@ void print_points(Strategy_data* data){
     }
     int_fast32_t main_str_count = (data->all_strategies_count / data->sub_strategies_count);
     printf("Average points per turn: %f\n", average_points / data->all_strategies_count / data->iterations_count / (data->all_strategies_count - 1));
-    printf("Average small group points per turn: %f\n", (data->group_count == 0)? 0 : small_average_points / (data->group_count * data->sub_strategies_count) / data->iterations_count / (data->all_strategies_count - 1));
+    if(data->group_count != 0){
+        printf("Average small group points per turn: %f\n", (data->group_count == 0)? 0 : small_average_points / (data->group_count * data->sub_strategies_count) / data->iterations_count / (data->all_strategies_count - 1));
+    }
     printf("Average big group points per turn: %f\n\n", big_average_points / (data->all_strategies_count - (data->group_count * data->sub_strategies_count) ) / data->iterations_count / (data->all_strategies_count - 1));
 }
