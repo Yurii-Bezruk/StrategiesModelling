@@ -84,3 +84,20 @@ void print_aggressiveness(Strategy_data* data){
     printf("Average big group aggressiveness: %f\n", big_average_aggressiveness / ((data->all_strategies_count / data->sub_strategies_count) - data->group_count));
 }
 
+void print_points(Strategy_data* data){
+    double average_points = 0.0;
+    double small_average_points = 0.0;
+    double big_average_points = 0.0;
+    for (int_fast32_t i = 0; i < data->all_strategies_count; i++){
+        if(data->strategies[i].group == GROUP_SMALL){
+            small_average_points += data->strategies[i].points;
+        } else {
+            big_average_points += data->strategies[i].points;
+        }
+        average_points += data->strategies[i].points;
+    }
+    int_fast32_t main_str_count = (data->all_strategies_count / data->sub_strategies_count);
+    printf("Average points per turn: %f\n", average_points / data->all_strategies_count / data->iterations_count / (data->all_strategies_count - 1));
+    printf("Average small group points per turn: %f\n", (data->group_count == 0)? 0 : small_average_points / (data->group_count * data->sub_strategies_count) / data->iterations_count / (data->all_strategies_count - 1));
+    printf("Average big group points per turn: %f\n", big_average_points / (data->all_strategies_count - (data->group_count * data->sub_strategies_count) ) / data->iterations_count / (data->all_strategies_count - 1));
+}

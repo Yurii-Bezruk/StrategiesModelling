@@ -76,4 +76,10 @@ void print_complexities(Strategy_data* data);
 */
 void print_aggressiveness(Strategy_data* data);
 
+/**
+* Function for printing average points per turn of strategies;
+* @param data - pointer for Strategy_data with needed strategies and parameters
+*/
+void print_points(Strategy_data* data);
+
 #endif // PRINT_H_INCLUDED
