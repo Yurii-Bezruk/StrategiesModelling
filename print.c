@@ -99,5 +99,5 @@ void print_points(Strategy_data* data){
     int_fast32_t main_str_count = (data->all_strategies_count / data->sub_strategies_count);
     printf("Average points per turn: %f\n", average_points / data->all_strategies_count / data->iterations_count / (data->all_strategies_count - 1));
     printf("Average small group points per turn: %f\n", (data->group_count == 0)? 0 : small_average_points / (data->group_count * data->sub_strategies_count) / data->iterations_count / (data->all_strategies_count - 1));
-    printf("Average big group points per turn: %f\n", big_average_points / (data->all_strategies_count - (data->group_count * data->sub_strategies_count) ) / data->iterations_count / (data->all_strategies_count - 1));
+    printf("Average big group points per turn: %f\n\n", big_average_points / (data->all_strategies_count - (data->group_count * data->sub_strategies_count) ) / data->iterations_count / (data->all_strategies_count - 1));
 }
